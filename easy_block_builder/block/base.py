@@ -3,9 +3,10 @@ from pydantic import BaseModel, Field
 from ..utils.generate import generate_id
 from datetime import datetime
 from collections import defaultdict
+from ..utils.dynamic_values import DynamicValuesMixin
 
 
-class BaseBlock(BaseModel):
+class BaseBlock(BaseModel, DynamicValuesMixin):
     block_id: str = Field(default_factory=lambda: generate_id("block"))
     type: Literal["base"] = "base"
     
