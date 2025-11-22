@@ -5,8 +5,8 @@ from pydantic import Field
 
 
 class SectionBlock(BaseBlock):
-    type: Literal['section'] = 'section'
+    type: Literal["section"] = "section"
     text: TextObject
     fields: list[TextObject] = Field(default_factory=list, max_items=10)
-    accessory: None = None # Any input block
+    accessory: None = None  # Any input block
     expanded: bool = False

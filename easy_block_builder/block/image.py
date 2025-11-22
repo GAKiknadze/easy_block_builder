@@ -4,6 +4,7 @@ from pydantic import Field
 from ..object.file import FileObject
 from ..object.size import SizedObject
 
+
 class ImageBlock(BaseBlock):
     type: Literal["image"] = "image"
     title: str | None = Field(default=None, max_length=200)

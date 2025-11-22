@@ -4,12 +4,16 @@ from pydantic import BaseModel, Field
 from typing import Self
 import re
 
-DYNAMIC_VALUES_PATTERN = re.compile(r"\{\{\s*(.+?)\s*\}\}") # захват внутри {{ ... }}, допускаем спецсимволы, ленивый захват
+DYNAMIC_VALUES_PATTERN = re.compile(
+    r"\{\{\s*(.+?)\s*\}\}"
+)  # захват внутри {{ ... }}, допускаем спецсимволы, ленивый захват
+
 
 class DynamicValuesMixin(BaseModel):
     __dynamic_values__: dict[str, int | str | bool | datetime | None] = Field(
-        default_factory=lambda: defaultdict(lambda: None))
-    
+        default_factory=lambda: defaultdict(lambda: None)
+    )
+
     def get_all_dynamic_variable_names(self) -> set[str]:
         """
         Вернуть множество имён динамических переменных из этого объекта и всех вложенных объектов/контейнеров.

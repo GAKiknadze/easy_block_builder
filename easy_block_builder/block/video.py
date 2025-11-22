@@ -6,7 +6,7 @@ from ..object.file import FileObject
 
 
 class VideoBlock(BaseBlock):
-    type: Literal['video'] = 'video'
+    type: Literal["video"] = "video"
     title: TextObject
     description: TextObject | None = None
     alt_text: str | None = Field(max_length=200)
