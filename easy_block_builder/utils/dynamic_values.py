@@ -1,6 +1,6 @@
 from datetime import datetime
 from collections import defaultdict
-from pydantic import BaseModel, Field
+from pydantic import Field
 from typing import Self
 import re
 
@@ -9,7 +9,7 @@ DYNAMIC_VALUES_PATTERN = re.compile(
 )  # захват внутри {{ ... }}, допускаем спецсимволы, ленивый захват
 
 
-class DynamicValuesMixin(BaseModel):
+class DynamicValuesMixin:
     __dynamic_values__: dict[str, int | str | bool | datetime | None] = Field(
         default_factory=lambda: defaultdict(lambda: None)
     )
@@ -19,6 +19,7 @@ class DynamicValuesMixin(BaseModel):
         Вернуть множество имён динамических переменных из этого объекта и всех вложенных объектов/контейнеров.
         Рекурсивно обходит поля, списки, кортежи, множества и словари, предотвращая зацикливание.
         Также извлекает имена переменных из строк вида {{название переменной}} — в названии допускаются спецсимволы.
+        При завершении сохраняет найденные имена в __dynamic_values__ с значением None (если ещё нет).
         """
 
         result: set[str] = set()
@@ -73,4 +74,18 @@ class DynamicValuesMixin(BaseModel):
                 _process_value(value)
 
         _recurse(self)
+
+        # Сохранить найденные переменные в __dynamic_values__ со значением None (если ещё нет)
+        try:
+            dyn_store = getattr(self, "__dynamic_values__", None)
+            if not isinstance(dyn_store, dict):
+                dyn_store = defaultdict(lambda: None)
+                setattr(self, "__dynamic_values__", dyn_store)
+        except Exception:
+            dyn_store = {}
+
+        for name in result:
+            if name not in dyn_store:
+                dyn_store[name] = None
+
         return result
