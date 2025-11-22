@@ -8,5 +8,5 @@ class SectionBlock(BaseBlock):
     type: Literal['section'] = 'section'
     text: TextObject
     fields: list[TextObject] = Field(default_factory=list, max_items=10)
-    accessory: BaseBlock | None = None # Any input block
+    accessory: None = None # Any input block
     expanded: bool = False
