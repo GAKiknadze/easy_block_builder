@@ -1,0 +1,10 @@
+[project]
+name = "easy-block-builder"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "pydantic>=2.12.4",
+    "pydantic-extra-types>=2.10.6",
+]
