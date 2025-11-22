@@ -1,4 +1,4 @@
-from datetime import datetime
+from typing import Any
 from collections import defaultdict
 from pydantic import Field
 import re
@@ -9,7 +9,7 @@ DYNAMIC_VALUES_PATTERN = re.compile(
 
 
 class DynamicValuesMixin:
-    __dynamic_values__: dict[str, int | str | bool | datetime | None] = Field(
+    __dynamic_values__: dict[str, Any] = Field(
         default_factory=lambda: defaultdict(lambda: None)
     )
 
