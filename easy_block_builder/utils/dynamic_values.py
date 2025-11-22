@@ -1,7 +1,6 @@
 from datetime import datetime
 from collections import defaultdict
 from pydantic import Field
-from typing import Self
 import re
 
 DYNAMIC_VALUES_PATTERN = re.compile(
@@ -26,8 +25,8 @@ class DynamicValuesMixin:
         visited_ids: set[int] = set()
 
         def _process_value(value):
-            # BaseObject -> рекурсивно обрабатывать
-            if isinstance(value, Self):
+            # DynamicValuesMixin -> рекурсивно обрабатывать
+            if issubclass(value, DynamicValuesMixin):
                 _recurse(value)
                 return
             # str -> извлечь шаблонные переменные {{...}}
@@ -56,7 +55,7 @@ class DynamicValuesMixin:
                 return
             # примитивы и прочее пропустить
 
-        def _recurse(obj: Self):
+        def _recurse(obj: "DynamicValuesMixin"):
             oid = id(obj)
             if oid in visited_ids:
                 return
