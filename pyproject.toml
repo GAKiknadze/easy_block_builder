@@ -34,7 +34,7 @@ Documentation = "https://github.com/GAKiknadze/easy_block_builder#readme"
 Issues = "https://github.com/GAKiknadze/easy_block_builder/issues"
 
 [tool.setuptools]
-packages = ["eblock", "easy_block_builder"]
+packages = ["easy_block_builder"]
 
 [tool.setuptools.package-data]
 easy_block_builder = ["py.typed"]
