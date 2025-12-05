@@ -1,4 +1,4 @@
-# Block Builder
+# EBlock (Easy Block Builder)
 
 A flexible, schema-driven library for building dynamic, context-aware content blocks with variable substitution, nested composition, validation, and asynchronous rendering.
 
