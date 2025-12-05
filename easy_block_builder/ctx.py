@@ -17,30 +17,30 @@ class Context:
 
     def __init__(self, path: str, vars: VARS_TYPE = None, **extra: EXTRA_TYPE) -> None:
         """
-            Initialize context with path, variables, and extra arguments.
-            Args:
-                path: The current path in the block structure.
-                vars: A dictionary of variables for substitution.
-                extra: Additional keyword arguments to store in context.
+        Initialize context with path, variables, and extra arguments.
+        Args:
+            path: The current path in the block structure.
+            vars: A dictionary of variables for substitution.
+            extra: Additional keyword arguments to store in context.
         """
         self._logger = getLogger(f"{__name__}.{self.__class__.__name__}")
 
         self._path = path
-        self._vars = {self._normalize_key(key): value for key, value in (vars or {}).items()}
+        self._vars = {
+            self._normalize_key(key): value for key, value in (vars or {}).items()
+        }
         self._extra = extra
 
-        self._logger.debug(
-            f"Initialized with path: {path} and arguments: {vars}"
-        )
+        self._logger.debug(f"Initialized with path: {path} and arguments: {vars}")
 
     @property
     def path(self) -> str:
         return copy(self._path)
-    
+
     @property
     def vars(self) -> VARS_TYPE:
         return deepcopy(self._vars)
-    
+
     @property
     def extra(self) -> EXTRA_TYPE:
         return copy(self._extra)

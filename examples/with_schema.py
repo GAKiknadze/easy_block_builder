@@ -8,10 +8,12 @@ class UserInput(BaseModel):
     age: int = Field(ge=0)
     city: Optional[str] = None
 
+
 class UserOutput(BaseModel):
     display_name: str
     profile_summary: str
     is_adult: bool
+
 
 class UserCardBlock(BaseBlock):
     _type = "user_card"
@@ -30,16 +32,15 @@ class UserCardBlock(BaseBlock):
 
         return result
 
+
 # Пример использования
 async def example_with_schema():
     ctx = Context(path="/profile", vars={"default_city": "Berlin"})
 
     # Входные данные содержат переменную
-    block = UserCardBlock({
-        "name": "{{ visitor_name }}",
-        "age": 25,
-        "city": "{{ default_city }}"
-    })
+    block = UserCardBlock(
+        {"name": "{{ visitor_name }}", "age": 25, "city": "{{ default_city }}"}
+    )
 
     ctx["visitor_name"] = "Bob"  # Можно задавать и после создания контекста
 
@@ -54,6 +55,8 @@ async def example_with_schema():
     #   'is_adult': True
     # }
 
+
 if __name__ == "__main__":
     import asyncio
+
     asyncio.run(example_with_schema())
