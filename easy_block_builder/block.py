@@ -35,7 +35,7 @@ class BaseBlock:
         
         self._logger.debug(f"Initialized block of type: {self._type} with properties: {self._props}")
     
-    def build(self, ctx: Context) -> tuple[dict[str, object], Type[BaseModel] | None]:
+    async def build(self, ctx: Context) -> tuple[dict[str, object], Type[BaseModel] | None]:
         """Build the block by replacing variables with their values from context.
         
         Args:
@@ -44,10 +44,10 @@ class BaseBlock:
         Returns:
             Tuple of (built properties dictionary, output schema if defined)
         """
-        def _build_value(val):
+        async def _build_value(val):
             """Recursively build values by replacing variables."""
             if isinstance(val, BaseBlock):
-                built_data, _ = val.build(ctx)
+                built_data, _ = await val.build(ctx)
                 return built_data
             elif isinstance(val, str):
                 def replace_var(match):
@@ -59,20 +59,20 @@ class BaseBlock:
                 
                 return _VARS_PATTERN.sub(replace_var, val)
             elif isinstance(val, dict):
-                return {k: _build_value(v) for k, v in val.items()}
+                return {k: await _build_value(v) for k, v in val.items()}
             elif isinstance(val, list):
-                return [_build_value(item) for item in val]
+                return [await _build_value(item) for item in val]
             elif isinstance(val, tuple):
-                return tuple(_build_value(item) for item in val)
+                return tuple(await _build_value(item) for item in val)
             elif isinstance(val, set):
-                return {_build_value(item) for item in val}
+                return {await _build_value(item) for item in val}
             else:
                 return val
         
-        result = {key: _build_value(value) for key, value in self._props.items()}
+        result = {key: await _build_value(value) for key, value in self._props.items()}
         
         # Prepare output by adding computed fields and modifications
-        result = self.prepare_output(result, ctx)
+        result = await self.prepare_output(result, ctx)
         
         # Validate result against output schema if defined
         if self._output_schema is not None:
@@ -87,7 +87,7 @@ class BaseBlock:
         self._logger.debug(f"Built block of type {self._type}: {result}")
         return result, self._output_schema
     
-    def prepare_output(self, result: dict[str, object], ctx: Context) -> dict[str, object]:
+    async def prepare_output(self, result: dict[str, object], ctx: Context) -> dict[str, object]:
         """Prepare output by adding computed fields or modifying existing ones.
         
         This method is called after variable substitution but before output schema validation.
@@ -101,6 +101,7 @@ class BaseBlock:
         Returns:
             Modified result dictionary with computed fields added
         """
+        self._logger.debug(f"Preparing output for block of type {self._type}")
         return result
     
     @property
