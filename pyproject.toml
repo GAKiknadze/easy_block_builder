@@ -1,7 +1,7 @@
 [project]
 name = "easy-block-builder"
 version = "0.2.0"
-description = "Add your description here"
+description = "A lightweight, async-friendly library for building dynamic, context-aware UI blocks with Pydantic validation and variable substitution."
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [

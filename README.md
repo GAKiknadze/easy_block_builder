@@ -61,8 +61,7 @@ Each block and context instance logs actions with a unique hierarchical logger n
 
 ### Basic Block
 ```python
-from .block import BaseBlock
-from .ctx import Context
+from easy_block_builder import BaseBlock, Context
 
 class TextBlock(BaseBlock):
     _type = "text"
