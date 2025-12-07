@@ -29,7 +29,7 @@ class ProductBlock(BaseBlock):
 
 
 async def example_product():
-    ctx = Context(path="/shop", vars={"USD_TO_RUB": 88.5})
+    ctx = Context(vars={"USD_TO_RUB": 88.5})
     block = ProductBlock({"name": "Wireless Headphones", "price_usd": 99.99})
     res, _ = await block.build(ctx)
     print(res["formatted_price"])  # "8,849.12 ₽"

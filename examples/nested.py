@@ -11,7 +11,7 @@ class UserProfileBlock(BaseBlock):
 
 # Использование
 async def example_nested():
-    ctx = Context(path="/", vars={"user": "Eve", "theme": "dark"})
+    ctx = Context(vars={"user": "Eve", "theme": "dark"})
 
     greeting = GreetingBlock(
         {"text": "Welcome, {{ user }}!", "style": "{{ theme }}-mode"}

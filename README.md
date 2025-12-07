@@ -6,6 +6,20 @@ Designed for use in page builders, CMS backends, or dynamic UI generation system
 
 ---
 
+## Installation
+
+```shell
+pip install eblock
+```
+
+or with `uv`:
+
+```shell
+uv add eblock
+```
+
+---
+
 ## Core Concepts
 
 ### `Context`
@@ -16,7 +30,6 @@ A container for variables and metadata used during block rendering.
 - Allows dynamic assignment via `ctx["key"] = value`.
 - Stores:
   - `vars`: dictionary of scalar or structured values (strings, numbers, lists, dicts, etc.)
-  - `path`: logical path in the block tree (e.g., `/page/hero`)
   - `extra`: arbitrary metadata (not used in substitution)
 
 ### `BaseBlock`
@@ -66,7 +79,7 @@ from easy_block_builder import BaseBlock, Context
 class TextBlock(BaseBlock):
     _type = "text"
 
-ctx = Context("/", vars={"name": "Alice"})
+ctx = Context(vars={"name": "Alice"})
 block = TextBlock({"content": "Hello, {{ name }}!"})
 result, _ = await block.build(ctx)
 # result = {"content": "Hello, Alice!"}
@@ -113,9 +126,9 @@ print(block.get_vars())  # {"first", "last"}
 ## API Reference
 
 ### `class Context`
-- `__init__(self, path: str, vars: dict | None = None, **extra)`
+- `__init__(self, vars: dict | None = None, **extra)`
 - `__getitem__(key)`, `__setitem__(key, value)`
-- Properties: `path`, `vars` (deep copy), `extra` (shallow copy)
+- Properties: `vars` (deep copy), `extra` (shallow copy)
 
 ### `class BaseBlock`
 - `__init__(self, properties: dict)`

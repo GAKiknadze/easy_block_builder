@@ -14,7 +14,7 @@ class GalleryBlock(BaseBlock):
 
 
 async def example_gallery():
-    ctx = Context(path="/", vars={"user_id": "789"})
+    ctx = Context(vars={"user_id": "789"})
 
     images = [
         ImageBlock({"src": "/img/{{ user_id }}/1.jpg", "alt": "Photo 1"}),

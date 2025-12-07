@@ -35,7 +35,7 @@ class UserCardBlock(BaseBlock):
 
 # Пример использования
 async def example_with_schema():
-    ctx = Context(path="/profile", vars={"default_city": "Berlin"})
+    ctx = Context(vars={"default_city": "Berlin"})
 
     # Входные данные содержат переменную
     block = UserCardBlock(

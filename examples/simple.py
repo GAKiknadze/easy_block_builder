@@ -8,7 +8,7 @@ class TextBlock(BaseBlock):
 
 # Пример использования
 async def example_simple():
-    ctx = Context(path="/page", vars={"user_name": "Alice", "age": 30})
+    ctx = Context(vars={"user_name": "Alice", "age": 30})
     block = TextBlock(
         {
             "title": "Hello, {{ user_name }}!",

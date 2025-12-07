@@ -7,15 +7,14 @@ EXTRA_TYPE = dict[str, object]
 
 
 class Context:
-    _path: str
     _vars: VARS_TYPE
     _extra: EXTRA_TYPE
 
     _logger: Logger
 
-    __slots__ = ("_path", "_vars", "_extra", "_logger")
+    __slots__ = ("_vars", "_extra", "_logger")
 
-    def __init__(self, path: str, vars: VARS_TYPE = None, **extra: EXTRA_TYPE) -> None:
+    def __init__(self, vars: VARS_TYPE = None, **extra: EXTRA_TYPE) -> None:
         """
         Initialize context with path, variables, and extra arguments.
         Args:
@@ -25,17 +24,12 @@ class Context:
         """
         self._logger = getLogger(f"{__name__}.{self.__class__.__name__}")
 
-        self._path = path
         self._vars = {
             self._normalize_key(key): value for key, value in (vars or {}).items()
         }
         self._extra = extra
 
-        self._logger.debug(f"Initialized with path: {path} and arguments: {vars}")
-
-    @property
-    def path(self) -> str:
-        return copy(self._path)
+        self._logger.debug(f"Initialized with arguments: {vars}")
 
     @property
     def vars(self) -> VARS_TYPE:
