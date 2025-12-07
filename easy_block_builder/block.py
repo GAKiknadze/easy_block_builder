@@ -1,15 +1,54 @@
 from logging import getLogger, Logger
 from .ctx import Context
+
 import re
 from typing import Type, Any, Set, Tuple, Dict, Optional
 from pydantic import BaseModel, ValidationError
-
 
 _VARS_PATTERN = re.compile(r"{{\s*(.*?)\s*}}")
 """Regex pattern for detecting variables in double-curly-brace format (e.g., {{ var_name }})"""
 
 
-class BaseBlock:
+class BlockMeta(type):
+    """A metaclass for automatic block registration."""
+
+    _registry: Dict[str, Type["BaseBlock"]] = {}
+
+    def __new__(mcs, name, bases, attrs):
+        cls = super().__new__(mcs, name, bases, attrs)
+
+        # Skipping the base class and inner classes
+        if name == "BaseBlock" or name.startswith("_"):
+            return cls
+
+        # Checking that the class has the _type attribute.
+        if hasattr(cls, "_type") and cls._type != "base":
+            block_type = cls._type
+
+            if block_type in mcs._registry:
+                existing_cls = mcs._registry[block_type]
+                getLogger(__name__).warning(
+                    "Block type '%s' already registered to %s. Skipping registration of %s.",
+                    block_type,
+                    existing_cls.__name__,
+                    cls.__name__,
+                )
+            else:
+                mcs._registry[block_type] = cls
+                getLogger(__name__).info(
+                    "Auto-registered block type '%s' to class %s",
+                    block_type,
+                    cls.__name__,
+                )
+
+        return cls
+
+    @classmethod
+    def get_registry(mcs) -> Dict[str, Type["BaseBlock"]]:
+        return mcs._registry
+
+
+class BaseBlock(metaclass=BlockMeta):
     """Base class for all building blocks in the processing pipeline.
 
     Each block type should subclass this and implement:
