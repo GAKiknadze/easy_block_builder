@@ -88,6 +88,7 @@ result, _ = await block.build(ctx)
 ### Validated Block with Computed Output
 ```python
 from pydantic import BaseModel
+from easy_block_builder import BaseBlock
 
 class Input(BaseModel):
     title: str
