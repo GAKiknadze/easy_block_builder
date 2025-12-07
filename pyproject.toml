@@ -1,7 +1,7 @@
 [project]
 name = "eblock"
-version = "0.2.2"
-description = "A lightweight, async-friendly library for building dynamic, context-aware UI blocks with Pydantic validation and variable substitution."
+version = "0.3.0"
+description = "A flexible, schema-driven library for building dynamic, context-aware content blocks with variable substitution, nested composition, validation, and asynchronous rendering."
 readme = "README.md"
 requires-python = ">=3.10"
 license = {text = "Apache-2.0"}
